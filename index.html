@@ -22,14 +22,34 @@
 
   <style>
     html,body,#root{margin:0;padding:0;min-height:100%;background:#0e0e10}
-    /* Safe area for iPhone notch */
     body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
-    /* Prevent bounce scroll on iOS */
     html{overflow:hidden;height:100%}
     body{overflow-y:auto;height:100%;-webkit-overflow-scrolling:touch}
+    #loader{
+      position:fixed;inset:0;background:#0e0e10;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      z-index:9999;transition:opacity .5s;
+    }
+    #loader.hidden{opacity:0;pointer-events:none}
+    .loader-icon{
+      width:56px;height:56px;border-radius:14px;
+      background:linear-gradient(135deg,#9c5dff,#40c4ff);
+      display:flex;align-items:center;justify-content:center;
+      font-size:26px;margin-bottom:20px;
+      box-shadow:0 0 32px rgba(156,93,255,.4);
+      animation:pulse 1.8s ease infinite;
+    }
+    .loader-text{font-family:monospace;font-size:.85rem;color:#6b6875;letter-spacing:.1em}
+    .loader-sub{font-family:monospace;font-size:.7rem;color:#3e3c4a;margin-top:8px;letter-spacing:.08em}
+    @keyframes pulse{0%,100%{box-shadow:0 0 32px rgba(156,93,255,.4)}50%{box-shadow:0 0 48px rgba(156,93,255,.7)}}
   </style>
 </head>
 <body>
+  <div id="loader">
+    <div class="loader-icon">🧠</div>
+    <div class="loader-text">MindForge</div>
+    <div class="loader-sub">LADEN...</div>
+  </div>
   <div id="root"></div>
 
   <script type="text/babel" data-presets="react">
@@ -1139,6 +1159,11 @@ function App() {
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(React.createElement(App));
+    // Hide loader after first render
+    setTimeout(() => {
+      const l = document.getElementById('loader');
+      if(l){ l.classList.add('hidden'); setTimeout(()=>l.remove(), 600); }
+    }, 100);
   </script>
 
   <!-- PWA Service Worker -->
