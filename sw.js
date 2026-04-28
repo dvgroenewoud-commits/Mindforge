@@ -1,11 +1,11 @@
-const CACHE = 'mindforge-v1';
+const CACHE = 'mindforge-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js',
+  'https://cdn.jsdelivr.net/npm/sucrase@3.35.0/dist/sucrase.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
   'https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;500&display=swap'
 ];
@@ -27,9 +27,8 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Network-first for API calls, cache-first for assets
   if (e.request.url.includes('anthropic.com') || e.request.url.includes('vimeo.com')) {
-    return; // always network for API calls
+    return;
   }
   e.respondWith(
     caches.match(e.request).then(cached =>
